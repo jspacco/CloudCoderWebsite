@@ -4,45 +4,62 @@ title: Deploy the CloudCoder webapp (the server)
 ---
 [Prev](configure.html) | [Next](builder.html)
 
-This describes how to deploy CloudCoder for the first time.  Once CloudCoder is installed, you can run many of these comamnds by themselves to manage the system.
+### Prepare the webapp and builder directories
 
-# Deploy CloudCoder
+You should have the following structure:
 
-### Prepare a directory for the webapp
+	cloudcouder/
+	cloudcoderApp.jar
+	cloudcoderBuilder.jar
+	cloudcoder.properties
+	webapp/
+	builder1/
 
-Create a fresh folder and put cloudcoderApp.jar inside it.  This should probably not be the same folder where you configured cloudcoder.  A good name for this folder is cloudcoder.
+On Linux or Mac OS X, you can create symlinks to cloudcoderApp.jar and cloudcoderBuilder.jar in the webapp and builder directories, like this:
 
-All commands in this section should be run in this directory.
+	cd /path/to/cloudcoder/webapp
+	ln -s ../cloudcoderApp.jar
+	cd ../builder1
+	ln -s ../cloudcoderBuilder.jar
 
-### Register students
-
-In the cloudcoder folder, register students by running this command:
-
-	java -jar cloudcoderApp.jar registerstudents
-
-This command will prompt for the name of a tab-delimited text file.  This file should have a number of tab-delimited lines in the following format:
-
-username	firstname	lastname	email	password	section
-
-The section is optional (it will default to 101 if you leave it out)
-
-_There is currently no way to change passwords, so you will have to email passwords to the students_
+Or you can just copy cloudcoderApp.jar into `webapp` and cloudcoderBuilder.jar into `builder1`.
 
 ### Starting the server
 
-To start the server:
+To start the server, run this command from inside the `webapp` folder:
 
 	java -jar cloudcoderApp.jar start
 
-This will create some files and a log directory.
+This will create two files (instance-xxxx.fifo\| and instance.pid) and a log directory.
+
+![Tip](../img/ktip.png) For those who are curious:  instance.pid will contain a number that is the pid (Process
+Identifier) of the CloudCoder webapp process, while instance-xxxx.fifo\|
+(xxxx will be replaced by the pid number) is a FIFO pipe that is used
+to shutdown the process.  You should **never** delete these files
+manually, and you should not need to worry about them, except to note
+that their existence indicates that cloudcoder should be running.
 
 ### Shutting down the server
 
-To shutdown the, server, run this command:
+To shutdown the, server, run this command from the `builder1` folder:
 
 	java -jar cloudcoderApp.jar shutdown
 
-If CloudCoder doesn't exit after two or three minutes, you can kill the process.
+A normal shutdown will delete the instance-xxxx.fifo\| and the
+instance.pid files.
+
+If CloudCoder doesn't exit after two or three minutes, you can kill
+the process using the pid found in instance.pid.  
+
+### Check that the CloudCoder webapp works
+
+Navigate to [http://localhost:8081](http://localhost:8081) (be sure to replace 8081 with the value of _cloudcoder.webserver.port_ from your cloudcoder.properties file).
+
+Log in with the username and password you set in the previous step while creating the database.
+
+You should be able to see the Demo Course, with one exercise in the C language.
+
+
 
 
 

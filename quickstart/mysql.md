@@ -4,8 +4,6 @@ title: Configure MySQL
 ---
 Prev | [Next](configure.html)
 
-### Configuring MySQL
-
 You will need to create a MySQL user for the CloudCoder webapp
 to use.  The username `cloudcoder` is a good choice.  To create the user,
 run the command

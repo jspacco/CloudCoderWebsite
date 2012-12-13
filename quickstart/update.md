@@ -8,16 +8,29 @@ title: How to update CloudCoder
 
 We may distribute new pre-compiled CloudCoder binaries (bug fixes, new features, etc).  To take advantage of these new binaries:
 
-1. Download the new binaries and put them into a new folder.  Do not copy over your existing cloudcoder binaries, in case the new distribution has an error (hopefully unlikely since the CloudCoder team are awesome coders, but certainly possible).
+1. Shutdown your current CloudCoder builders ([instructions here](builder.html))
 
-2. Copy your existing cloudcoder.properties file into the folder containing your new binaries.
+2. Shutdown your current CloudCoder server ([instructions here](commands.html))
 
-3. [Configure the CloudCoder binaries](configure.html) following the same steps outlined previously in this quickstart guide.
+3. Copy your current cloudcoderApp.jar and cloudcoderBuilder.jar files to a separate folder (i.e. don't copy over your existing cloudcoderApp.jar and cloudcoderBuilder.jar files) in case the new binaries don't work.
 
-4. Shutdown your current CloudCoder builders ([instructions here](builder.html))
+4. [Download](../downloads/downloads.html) the new binaries into the `cloudcoder` folder.
 
-5. Shutdown your current CloudCoder server ([instructions here](commands.html))
+5. Configure the new binaries
 
-6. Start the new server in a new folder.  Since it will use the same CloudCoder database, it should work without any configuration on the database.
+		java -jar cloudcoderApp.jar configure
 
-7. Start the new builders.
+6. Upgrade the database
+
+	Run this command from the `cloudcoder` folder:
+
+		java -jar cloudcoderApp.jar migratedb
+
+7. Copy cloudcoderApp.jar to `cloudcoder/webapp` and cloudcoderBuilder.jar `cloudcoder/builder`
+
+	You can skip this step if you previously created symlinks.
+
+8. Start the server ([instructions here](deploy.html))
+
+9. Start the builder ([instructions here](builder.html))
+

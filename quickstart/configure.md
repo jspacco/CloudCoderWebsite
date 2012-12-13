@@ -1,47 +1,63 @@
 ---
 layout: default
-title: Configure the CloudCoder binaries
+title: Download and configure the pre-compiled binaries
 ---
 [Prev](mysql.html) | [Next](deploy.html)
 
-# Configure CloudCoder
+## Download the binaries
 
-### Download the binaries
+Download the [pre-compiled webapp and builder binaries](../downloads/downloads.html)
 
-Download the pre-compiled webapp and builder binaries, along with the cloudcoder.properties configuration file:
+Then download the template [cloudcoder.properties](cloudcoder.properties) file
 
-* [cloudcoderApp.jar](http://cs.knox.edu/jspacco/cloudcoder/cloudcoderApp.jar)
-* [cloudcoderBuilder.jar](http://cs.knox.edu/jspacco/cloudcoder/cloudcoderBuilder.jar)
-* [cloudcoder.properties](http://cs.knox.edu/jspacco/cloudcoder/cloudcoder.properties)
+This should give you 3 files (Note that binaries might have version numbers appended
+to them, like cloudcoderApp-v0.1.jar):
 
-### Configure the CloudCoder binaries
+	cloudcoderApp.jar
 
-Put all 3 files your just downloaded into the same directory.
+	cloudcoderBuilder.jar
 
-Enter the information for the [MySQL installation](mysql.html) you set up from the previous step into the cloudcoder.properties file.  The other settings can stay the same.
+	cloudcoder.properties
 
-To configure your pre-compiled binaries with the configuration settings you just entered in your cloudcoder.properties, run this command:
+## Create your directory structure
+
+Create a _cloudcoder_ directory, and _cloudcoder/webapp_ and _cloudcoder/builder1_ inside of it.
+
+## Configure the CloudCoder binaries
+
+Put all 3 files you just downloaded into the _cloudcoder_ directory
+that you just created.
+
+Enter your configuration settings into cloudcoder.properties.  Here is [much more information about the cloudcoder.properties file](cloudcoder.properties.html) to help you do so.  The main things are to make sure that you set your database configuration information correctly.
+
+Store your configuration settings into the binaries by running this command:
 
 	java -jar cloudcoderApp.jar configure
 
 And follow the instructions.  This will copy the configuration properties from your cloudcoder.properties file into the two jarfiles.
 
-### Create the cloudcoder database
+Here is a [sample transcript of configuring the binaries](configure-transcript.txt).
+
+![Tip](../img/ktip.png)  You should reply _yes_ when asked if you want to create a new keystore.  The keystore contains keys that are used for secure communication between the builder and the webapp.
+
+![Tip](../img/ktip.png) You run the configure command using cloudcoderApp.jar, but this command configures both cloudcoderApp.jar and cloudcoderBuilder.jar.  This may not be intuitive.
+
+### Create the cloudcoder database tables (requires a running MySQL server)
 
 Run this command:
 
 	java -jar cloudcoderApp.jar createdb
 
-This creates the cloudcoder database, as well as your initial cloudcoder user account.  Note that the database should not already exist, but the mysql account should have sufficient permissions to create it.  You will be prompted for the cloudcoder username and password you would like to use; you will use this username/password to log into the cloudcoder server and it does not need to match the mysql username or any other username.  Be sure to use the default value for the exercise repository (`https://cloudcoder.org/repo`).
+Here is a [sample transcript of creating the database](createdb-transcript.txt).
 
-List your configuration properties, and make sure they match what you put in your cloudcoder.properties.
+This command creates the cloudcoder database tables, as well as your initial cloudcoder user account.  Note that the database should not already exist, but the mysql account should have sufficient permissions to create it.  You will be prompted for the cloudcoder username and password you would like to use; you will use this username/password to log into the cloudcoder server and it does not need to match the mysql username or any other username.  
+
+![Tip](../img/ktip.png) Be sure to use the default value for the exercise repository (`https://cloudcoder.org/repo`) or you will not be able to download or upload shared exercises.  This value is stored in the database, not in the cloudcoder.properties file.
+
+### List your configuration properties
+
+List your configuration properties, and ensure they match the values in your cloudcoder.properties files.
 
 	java -jar cloudcoderApp.jar listconfig
 
-### Create a new course
 
-Create a new course:
-
-	java -jar cloudcoderApp.jar createcourse
-
-Then follow the prompts
